@@ -15,6 +15,10 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
+app.post('/', function(req, res) {
+  console.log(req.body)
+})
+
 app.post('/comment', function(req, res) {
   let comment = req.body.comment,
       issue = req.body.issue,
