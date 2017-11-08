@@ -16,6 +16,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 app.post('/', function(req, res) {
+  console.log(req.body)
   switch(req.body.webhookEvent) {
     case 'comment_created':
       sendCommentNotification(req, res)
