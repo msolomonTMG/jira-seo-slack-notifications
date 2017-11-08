@@ -18,14 +18,14 @@ app.use(bodyParser.json());
 app.post('/', function(req, res) {
   console.log(req.body)
   switch(req.body.webhookEvent) {
-    case 'comment_created':
+    case 'jira:issue_updated':
       sendCommentNotification(req, res)
       break;
-    case 'issue_created':
+    case 'jira:issue_created':
       sendIssueCreatedNotification(req, res) 
       break;
     default:
-      res.send(200)
+      res.sendStatus(200)
   }
 })
 
@@ -50,8 +50,8 @@ function sendCommentNotification(req, res) {
     }
   ]
   slack.sendMessage([seoSlackChannel], text, attachments)
-    .then(success => { res.send(200) })
-    .catch(err => {res.send(500) })
+    .then(success => { res.sendStatus(200) })
+    .catch(err => {res.sendStatus(500) })
 }
 
 function sendIssueCreatedNotification(req, res) {
@@ -77,8 +77,8 @@ function sendIssueCreatedNotification(req, res) {
 
   let urls = [seoSlackChannel]
   slack.sendMessage(urls, text, attachments)
-    .then(success => { res.send(200) })
-    .catch(err => {res.send(500) })
+    .then(success => { res.sendStatus(200) })
+    .catch(err => {res.sendStatus(500) })
 }
 
 app.listen(app.get('port'), function() {
