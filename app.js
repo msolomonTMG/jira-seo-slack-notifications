@@ -16,10 +16,19 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 app.post('/', function(req, res) {
-  console.log(req.body)
+  switch(req.body.webhookEvent) {
+    case 'comment_created':
+      sendCommentNotification(req, res)
+      break;
+    case 'issue_created':
+      sendIssueCreatedNotification(req, res) 
+      break;
+    default:
+      res.send(200)
+  }
 })
 
-app.post('/comment', function(req, res) {
+function sendCommentNotification(req, res) {
   let comment = req.body.comment,
       issue = req.body.issue,
       jiraURL = issue.self.split('/rest/api')[0];
@@ -40,9 +49,11 @@ app.post('/comment', function(req, res) {
     }
   ]
   slack.sendMessage([seoSlackChannel], text, attachments)
-})
+    .then(success => { res.send(200) })
+    .catch(err => {res.send(500) })
+}
 
-app.post('/created', function(req, res) {
+function sendIssueCreatedNotification(req, res) {
   let text,
       color,
       issue = req.body.issue,
@@ -65,7 +76,9 @@ app.post('/created', function(req, res) {
 
   let urls = [seoSlackChannel]
   slack.sendMessage(urls, text, attachments)
-})
+    .then(success => { res.send(200) })
+    .catch(err => {res.send(500) })
+}
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
