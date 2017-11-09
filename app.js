@@ -19,10 +19,14 @@ app.post('/', function(req, res) {
   console.log(req.body)
   switch(req.body.webhookEvent) {
     case 'jira:issue_updated':
-      sendCommentNotification(req, res)
+      if (req.body.issue_event_type_name == 'issue_commented') {
+        sendCommentNotification(req, res)
+      } else {
+        res.sendStatus(200)
+      }
       break;
     case 'jira:issue_created':
-      sendIssueCreatedNotification(req, res) 
+      sendIssueCreatedNotification(req, res)
       break;
     default:
       res.sendStatus(200)
