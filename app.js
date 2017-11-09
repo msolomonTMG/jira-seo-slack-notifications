@@ -25,7 +25,12 @@ app.post('/', function(req, res) {
           sendCommentNotification(req, res)
           break;
         case 'issue_generic':
-          console.log(req.body.changelog.items)
+          req.body.changelog.items.forEach(item => {
+            if (item.field && item.field == 'status' && item.toString.match(/Done|Closed/) {
+              sendDoneNotification(req, res)
+              return
+            }
+          })
           break;
         default:
           res.sendStatus(200)
@@ -39,6 +44,32 @@ app.post('/', function(req, res) {
       res.sendStatus(200)
   }
 })
+
+function sendDoneNotification(req, res) {
+  let issue = req.body.issue,
+      user = req.body.user,
+      jiraURL = issue.self.split('/rest/api')[0];
+
+  let text = `${user.displayName} transitioned an issue to ${issue.status.name}`
+  let attachments = [
+    {
+      fallback: `${user.displayName} transitioned <${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}> to ${issue.status.name}`,
+      title: `<${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
+      color: 'good',
+      thumb_url: `${user.avatarUrls["48x48"]}`,
+      fields: [
+        {
+          title: "Resolution",
+          value: `${issue.fields.resolution}`,
+          short: false
+        }
+      ]
+    }
+  ]
+  slack.sendMessage([seoSlackChannel], text, attachments)
+    .then(success => { res.sendStatus(200) })
+    .catch(err => {res.sendStatus(500) })
+}
 
 function sendCommentNotification(req, res) {
   let comment = req.body.comment,
