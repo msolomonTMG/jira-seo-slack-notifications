@@ -16,7 +16,6 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 app.post('/', function(req, res) {
-  console.log(req.body)
   switch(req.body.webhookEvent) {
     case 'jira:issue_updated':
 
@@ -29,6 +28,8 @@ app.post('/', function(req, res) {
             if (item.field && item.field == 'status' && item.toString.match(/Done|Closed/)) {
               sendDoneNotification(req, res)
               return
+            } else {
+              res.sendStatus(200)
             }
           })
           break;
