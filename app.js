@@ -54,7 +54,7 @@ function sendDoneNotification(req, res) {
   let text = `${user.displayName} transitioned an issue to ${issue.fields.status.name}`
   let attachments = [
     {
-      fallback: `${user.displayName} transitioned <${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}> to ${issue.status.name}`,
+      fallback: `${user.displayName} transitioned <${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}> to ${issue.fields.status.name}`,
       title: `<${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
       color: 'good',
       thumb_url: `${user.avatarUrls["48x48"]}`,
