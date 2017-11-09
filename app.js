@@ -98,11 +98,11 @@ function sendCommentNotification(req, res) {
 }
 
 function sendIssueCreatedNotification(req, res) {
-  let text,
-      color,
+  let color,
       issue = req.body.issue,
       jiraURL = issue.self.split('/rest/api')[0];
 
+  let text = `${issue.fields.creator.name} created an issue`
   let attachments = [
     {
       fallback: `${issue.fields.creator.name} created <${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
