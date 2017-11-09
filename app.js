@@ -26,7 +26,7 @@ app.post('/', function(req, res) {
           break;
         case 'issue_generic':
           req.body.changelog.items.forEach(item => {
-            if (item.field && item.field == 'status' && item.toString.match(/Done|Closed/) {
+            if (item.field && item.field == 'status' && item.toString.match(/Done|Closed/)) {
               sendDoneNotification(req, res)
               return
             }
