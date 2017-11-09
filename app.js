@@ -102,7 +102,7 @@ function sendIssueCreatedNotification(req, res) {
       issue = req.body.issue,
       jiraURL = issue.self.split('/rest/api')[0];
 
-  let text = `${issue.fields.creator.name} created an issue`
+  let text = `${issue.fields.creator.displayName} created an issue`
   let attachments = [
     {
       fallback: `${issue.fields.creator.name} created <${jiraURL}/browse/${issue.key}|${issue.key}: ${issue.fields.summary}>`,
