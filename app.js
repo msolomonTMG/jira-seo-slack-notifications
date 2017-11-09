@@ -61,7 +61,7 @@ function sendDoneNotification(req, res) {
       fields: [
         {
           title: "Resolution",
-          value: `${issue.fields.resolution}`,
+          value: `${issue.fields.resolution.name}`,
           short: false
         }
       ]
