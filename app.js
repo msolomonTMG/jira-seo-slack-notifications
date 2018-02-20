@@ -18,6 +18,7 @@ app.use(bodyParser.json());
 app.post('/', function(req, res) {
   console.log('----------PINGED----------')
   console.log(req.body)
+  console.log(req.body.changelog)
   switch(req.body.webhookEvent) {
     case 'jira:issue_updated':
 
