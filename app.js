@@ -16,6 +16,8 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 app.post('/', function(req, res) {
+  console.log('----------PINGED----------')
+  console.log(req.body)
   switch(req.body.webhookEvent) {
     case 'jira:issue_updated':
 
@@ -68,8 +70,8 @@ function sendDoneNotification(req, res) {
     }
   ]
   slack.sendMessage([seoSlackChannel], text, attachments)
-    .then(success => { res.sendStatus(200) })
-    .catch(err => {res.sendStatus(500) })
+    .then(success => { console.log('----------SUCCESSFULLY SENT TO SLACK----------'); res.sendStatus(200) })
+    .catch(err => { console.log('----------ERROR SENDING TO SLACK----------'); console.log(err); res.sendStatus(500) })
 }
 
 function sendCommentNotification(req, res) {
