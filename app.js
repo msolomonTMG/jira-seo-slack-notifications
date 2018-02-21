@@ -15,6 +15,11 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
+app.get('/', function(req, res) {
+  //wake up
+  res.sendStatus(200)
+})
+
 app.post('/', function(req, res) {
   console.log('----------PINGED----------')
   console.log(req.body)
