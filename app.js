@@ -28,9 +28,6 @@ app.post('/', function(req, res) {
     case 'jira:issue_updated':
 
       switch(req.body.issue_event_type_name) {
-        case 'issue_commented':
-          sendCommentNotification(req, res)
-          break;
         case 'issue_generic':
           req.body.changelog.items.forEach(item => {
             if (item.field && item.field == 'status' && item.toString.match(/Done|Closed/)) {
@@ -49,6 +46,11 @@ app.post('/', function(req, res) {
     case 'jira:issue_created':
       sendIssueCreatedNotification(req, res)
       break;
+
+    case 'comment_created':
+      sendCommentNotification(req, res)
+      break;
+      
     default:
       res.sendStatus(200)
   }
